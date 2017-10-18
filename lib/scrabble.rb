@@ -1,8 +1,6 @@
-class Scrabble
+require "pry"
 
-  def score(word)
-    1
-  end
+class Scrabble
 
   def point_values
     {
@@ -15,4 +13,70 @@ class Scrabble
       "Y"=>4, "Z"=>10
     }
   end
+
+  def split_word(word)
+    if word != nil; word.upcase.chars
+    end
+  end
+
+  def score(word)
+    scored = 0
+    if word != nil; split_word(word).map do |letter|
+      scored += point_values[letter]
+      end
+    end
+    return scored
+  end
+
+  def seven_letter_bonus(word)
+    if word.length >= 7
+      true
+    else
+     false
+   end
+  end
+
+  def multiply_points(point_map, letter_multiplier)
+    index = 0
+    total_point_map = []
+    (point_map.length).times do
+      total_point_map << (point_map[index] * letter_multiplier[index])
+      index += 1
+    end
+    total_point_map.sum
+    end
+
+  def add_up_points(scored, letter_multiplier, word_mulitplier)
+    if word_mulitplier != nil && seven_letter_bonus(scored) == true
+      score = (multiply_points(scored, letter_multiplier) + 10) * word_mulitplier
+    elsif word_mulitplier != nil && seven_letter_bonus(scored) == false
+      score = multiply_points(scored, letter_multiplier) * word_mulitplier
+    elsif word_mulitplier == nil && seven_letter_bonus(scored) == true
+      score = multiply_points(scored, letter_multiplier) + 10
+    else
+      score = multiply_points(scored, letter_multiplier)
+    end
+    return score
+  end
+
+  def score_with_multipliers(word, letter_multiplier, word_mulitplier = nil)
+    scored = []
+    if word != nil; split_word(word).map do |letter|
+      scored << point_values[letter]
+      end
+    end
+    add_up_points(scored, letter_multiplier, word_mulitplier)
+  end
+
+  def highest_scoring_word(word_list)
+    word_scores = {}
+    word_list.map do |word|
+      word_scores[word] = score(word)
+    end
+    word_scores.max_by do |word, score|
+      score
+    end
+  end
+
+
 end
