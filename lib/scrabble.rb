@@ -33,7 +33,7 @@ class Scrabble
       true
     else
      false
-   end
+    end
   end
 
   def multiply_points(point_map, letter_multiplier)
@@ -42,7 +42,7 @@ class Scrabble
     (point_map.length).times do
       total_point_map << (point_map[index] * letter_multiplier[index])
       index += 1
-    end
+      end
     total_point_map.sum
     end
 
@@ -72,11 +72,10 @@ class Scrabble
     word_scores = {}
     word_list.map do |word|
       word_scores[word] = score(word)
-    end
+     end
     word_scores.max_by do |word, score|
       score
-    end
+     end
   end
-
 
 end
